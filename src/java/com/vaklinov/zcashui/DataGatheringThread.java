@@ -39,9 +39,7 @@ package com.vaklinov.zcashui;
  * 
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
-public class DataGatheringThread<T>
-	extends Thread
-{	
+public class DataGatheringThread<T>  extends Thread  {
 	/**
 	 * All implementations must provide an impl. of this interface to 
 	 * gather the actual data.
@@ -50,8 +48,7 @@ public class DataGatheringThread<T>
 	 */
 	public static interface DataGatherer<T>
 	{
-		T gatherData()
-			throws Exception;
+		T gatherData() throws Exception;
 	}
 	
 	
@@ -62,7 +59,7 @@ public class DataGatheringThread<T>
 	// Interval in ms for gathering
 	private int interval;
 	// Fag to run immediately - no wait
-	boolean doAFirstGatehring;
+	boolean doAFirstGathering;
 	// Error reporter
 	private StatusUpdateErrorReporter errorReporter;
 	// Flag allowing the thread to be suspended
@@ -78,6 +75,7 @@ public class DataGatheringThread<T>
 	public DataGatheringThread(DataGatherer<T> gatherer, StatusUpdateErrorReporter errorReporter, int interval)
 	{
 		this(gatherer, errorReporter, interval, false);
+		setName("data gatherer thread");
 	}
 	
 	/**
@@ -88,13 +86,13 @@ public class DataGatheringThread<T>
 	 * @param interval Interval in ms for gathering
 	 */
 	public DataGatheringThread(DataGatherer<T> gatherer, StatusUpdateErrorReporter errorReporter, 
-			                   int interval, boolean doAFirstGatehring)
+			                   int interval, boolean doAFirstGathering)
 	{
 		this.suspended = false;
 		this.gatherer = gatherer;
 		this.errorReporter = errorReporter;
 		this.interval = interval;
-		this.doAFirstGatehring = doAFirstGatehring;
+		this.doAFirstGathering = doAFirstGathering;
 		
 		this.lastGatheredData = null;
 				
@@ -131,7 +129,7 @@ public class DataGatheringThread<T>
 	@Override
 	public void run()
 	{
-		if (this.doAFirstGatehring && (!this.suspended))
+		if (this.doAFirstGathering && (!this.suspended))
 		{
 			this.doOneGathering();
 		}

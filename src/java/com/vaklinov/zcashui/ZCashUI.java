@@ -62,6 +62,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import cash.koto.daemon.windows.CheckAndInit;
 import com.vaklinov.zcashui.OSUtil.OS_TYPE;
 import com.vaklinov.zcashui.ZCashClientCaller.NetworkAndBlockchainInfo;
 import com.vaklinov.zcashui.ZCashClientCaller.WalletCallException;
@@ -113,7 +114,7 @@ public class ZCashUI
     public ZCashUI(StartupProgressDialog progressDialog)
         throws IOException, InterruptedException, WalletCallException
     {
-        super("Swing Wallet UI for Koto\u00AE - 0.73 (beta)");
+        super("Swing Wallet UI for Koto\u00AE - 0.74 (beta)");
         
         if (progressDialog != null)
         {
@@ -369,6 +370,7 @@ public class ZCashUI
 
                 JOptionPane.showMessageDialog(
                     ZCashUI.this.getRootPane().getParent(),
+
                     rb.S("The ZCash GUI Wallet is currently considered experimental. Use of this software\n") +
                     rb.S("comes at your own risk! Be sure to read the list of known issues and limitations\n") +
                     rb.S("at this page: https://github.com/vaklinov/zcash-swing-wallet-ui\n\n") +
@@ -384,6 +386,7 @@ public class ZCashUI
                     rb.S("THE SOFTWARE.\n\n") +
                     rb.S("(This message will be shown only once)"),
                     rb.S("Disclaimer"), JOptionPane.INFORMATION_MESSAGE);
+
             }
         });
         
@@ -451,7 +454,7 @@ public class ZCashUI
 	                {
 	                    UIManager.setLookAndFeel(ui.getClassName());
 	                    break;
-	                };
+	                }
 	            }
             }
 
@@ -471,10 +474,19 @@ public class ZCashUI
 
             // If zcashd is currently not running, do a startup of the daemon as a child process
             // It may be started but not ready - then also show dialog
-            ZCashInstallationObserver initialInstallationObserver = 
-            	new ZCashInstallationObserver(OSUtil.getProgramDirectory());
+            ZCashInstallationObserver initialInstallationObserver;
+            try {
+                initialInstallationObserver = new ZCashInstallationObserver(OSUtil.getProgramDirectory());
+            } catch (InstallationDetectionException iex) {
+                // trying to init and then restart app
+                final CheckAndInit checkAndInit = new CheckAndInit();
+                StartupProgressDialog startupBar = new StartupProgressDialog(null,"first run initialization...");
+                startupBar.setVisible(true);
+                checkAndInit.process(startupBar);
+                startupBar.dispose();
+                initialInstallationObserver = new ZCashInstallationObserver(OSUtil.getProgramDirectory());
+            }
             DaemonInfo zcashdInfo = initialInstallationObserver.getDaemonInfo();
-            initialInstallationObserver = null;
             
             ZCashClientCaller initialClientCaller = new ZCashClientCaller(OSUtil.getProgramDirectory());
             boolean daemonStartInProgress = false;
@@ -506,11 +518,10 @@ public class ZCashUI
             {
             	Log.info(
             		"kotod is not runing at the moment or has not started/synchronized 100% - showing splash...");
-	            startupBar = new StartupProgressDialog(initialClientCaller);
+	            startupBar = new StartupProgressDialog(initialClientCaller, "starting...");
 	            startupBar.setVisible(true);
 	            startupBar.waitForStartup();
             }
-            initialClientCaller = null;
             
             // Main GUI is created here
             ZCashUI ui = new ZCashUI(startupBar);

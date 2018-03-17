@@ -28,6 +28,8 @@
  **********************************************************************************/
 package com.vaklinov.zcashui;
 
+import cash.koto.daemon.UsersMessageConsole;
+
 import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -61,6 +63,15 @@ public class Log
 			System.out.println("Error in initializing file logging!!!");
 			ioe.printStackTrace();
 		}
+	}
+
+	public static UsersMessageConsole getUsersConsole() {
+		return new UsersMessageConsole() {
+			@Override
+			public void showMessage(String text) {
+				Log.info(text);
+			}
+		};
 	}
 	
 	public static void debug(String message, Object ... args)

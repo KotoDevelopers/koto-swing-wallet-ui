@@ -45,9 +45,9 @@ import javax.swing.JPanel;
  *
  * @author Ivan Vaklinov <ivan@vaklinov.com>
  */
-public class PresentationPanel 
-	extends JPanel 
-{
+public class PresentationPanel extends JPanel  {
+
+	static final int padding = 5;
 	static final int GRADIENT_EXTENT = 17;
 
 	static final Color  colorBorder = new Color(140, 145, 145);
@@ -58,7 +58,7 @@ public class PresentationPanel
 	
 	public PresentationPanel()
 	{
-		this.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 6));
+		this.setLayout(new FlowLayout(FlowLayout.LEFT, 6+padding, 6+padding));
 	}
 	
 
@@ -96,10 +96,10 @@ public class PresentationPanel
 		
 		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics2D.setPaint(paint);
-		graphics2D.fillRoundRect(0, 0, w - 1, h - 1, GRADIENT_EXTENT, GRADIENT_EXTENT);
+		graphics2D.fillRoundRect(padding, padding, w - 1 - padding, h - 1 - padding, GRADIENT_EXTENT, GRADIENT_EXTENT);
 		graphics2D.setColor(colorBorder);
 		graphics2D.setStroke(edgeStroke);
-		graphics2D.drawRoundRect(0, 0, w - 1, h - 1, GRADIENT_EXTENT, GRADIENT_EXTENT);
+		graphics2D.drawRoundRect(padding, padding, w - 1 - padding, h - 1 - padding, GRADIENT_EXTENT, GRADIENT_EXTENT);
 	}
 
 }

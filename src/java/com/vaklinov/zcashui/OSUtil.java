@@ -29,8 +29,7 @@
 package com.vaklinov.zcashui;
 
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Locale;
 
 
@@ -42,32 +41,36 @@ import java.util.Locale;
 public class OSUtil
 {
 
-	public static enum OS_TYPE
+	public enum OS_TYPE
 	{
 		LINUX, WINDOWS, MAC_OS, FREE_BSD, OTHER_BSD, SOLARIS, AIX, OTHER_UNIX, OTHER_OS
-	};
-	
-	
+	}
+
+
 	public static boolean isUnixLike(OS_TYPE os)
 	{
-		return os == OS_TYPE.LINUX || os == OS_TYPE.MAC_OS || os == OS_TYPE.FREE_BSD || 
-			   os == OS_TYPE.OTHER_BSD || os == OS_TYPE.SOLARIS || os == OS_TYPE.AIX || 
+		return os == OS_TYPE.LINUX || os == OS_TYPE.MAC_OS || os == OS_TYPE.FREE_BSD ||
+			   os == OS_TYPE.OTHER_BSD || os == OS_TYPE.SOLARIS || os == OS_TYPE.AIX ||
 			   os == OS_TYPE.OTHER_UNIX;
 	}
-	
-	
+
+
 	public static boolean isHardUnix(OS_TYPE os)
 	{
-		return os == OS_TYPE.FREE_BSD || 
-			   os == OS_TYPE.OTHER_BSD || os == OS_TYPE.SOLARIS || 
+		return os == OS_TYPE.FREE_BSD ||
+			   os == OS_TYPE.OTHER_BSD || os == OS_TYPE.SOLARIS ||
 			   os == OS_TYPE.AIX || os == OS_TYPE.OTHER_UNIX;
 	}
-	
-	
+
+	public static String getUsername() {
+		return System.getProperty("user.name");
+	}
+
+
 	public static OS_TYPE getOSType()
 	{
 		String name = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-		
+
 		if (name.contains("linux"))
 		{
 			return OS_TYPE.LINUX;
@@ -97,35 +100,47 @@ public class OSUtil
 			return OS_TYPE.OTHER_OS;
 		}
 	}
-	
-	
+
+
 	// Returns the name of the zcashd server - may vary depending on the OS.
 	public static String getZCashd()
 	{
 		String zcashd = "kotod";
-		
+
 		OS_TYPE os = getOSType();
 		if (os == OS_TYPE.WINDOWS)
 		{
 			zcashd += ".exe";
 		}
-		
+
 		return zcashd;
 	}
-	
-	
+
+
 	// Returns the name of the zcash-cli tool - may vary depending on the OS.
 	public static String getZCashCli()
 	{
 		String zcashcli = "koto-cli";
-		
+
 		OS_TYPE os = getOSType();
 		if (os == OS_TYPE.WINDOWS)
 		{
 			zcashcli += ".exe";
 		}
-		
+
 		return zcashcli;
+	}
+
+	public static String getKotoTx() {
+		String kototx = "koto-tx";
+
+		OS_TYPE os = getOSType();
+		if (os == OS_TYPE.WINDOWS)
+		{
+			kototx += ".exe";
+		}
+
+		return kototx;
 	}
 
 
@@ -164,12 +179,30 @@ public class OSUtil
 
 		return new File(".").getCanonicalPath();
 	}
-	
-	
+
+
 	public static File getUserHomeDirectory()
 		throws IOException
 	{
         return new File(System.getProperty("user.home"));
+	}
+
+	public static String getDataDirectory() {
+		OS_TYPE os = getOSType();
+        try {
+            if (os == OS_TYPE.MAC_OS) {
+                return new File(System.getProperty("user.home") +
+                        File.separator + "Library" +
+                        File.separator + "Application Support"
+                ).getCanonicalPath();
+            } else if (os == OS_TYPE.WINDOWS) {
+                return new File(System.getenv("APPDATA")).getCanonicalPath();
+            } else {
+                return new File(System.getProperty("user.home")).getCanonicalPath();
+            }
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
 	}
 
 
@@ -180,18 +213,19 @@ public class OSUtil
 			return ZCashUI.dataDir;
 		}
 
+
 		OS_TYPE os = getOSType();
-		
-		if (os == OS_TYPE.MAC_OS)
-		{
-			return new File(System.getProperty("user.home") + "/Library/Application Support/Koto").getCanonicalPath();
-		} else if (os == OS_TYPE.WINDOWS)
-		{
-			return new File(System.getenv("APPDATA") + "\\Koto").getCanonicalPath();
-		} else
-		{
-			return new File(System.getProperty("user.home") + "/.koto").getCanonicalPath();
-		}
+        try {
+            if (os == OS_TYPE.MAC_OS) {
+                return new File(getDataDirectory()).getCanonicalPath();
+            } else if (os == OS_TYPE.WINDOWS) {
+                return new File(getDataDirectory() + File.separator + "Koto").getCanonicalPath();
+            } else {
+                return new File(getDataDirectory() + File.separator + ".koto").getCanonicalPath();
+            }
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
 	}
 
 
@@ -202,7 +236,7 @@ public class OSUtil
 	    File userHome = new File(System.getProperty("user.home"));
 	    File dir;
 	    OS_TYPE os = getOSType();
-	    
+
 	    if (os == OS_TYPE.MAC_OS)
 	    {
 	        dir = new File(userHome, "Library/Application Support/KotoSwingWalletUI");
@@ -213,7 +247,7 @@ public class OSUtil
 	    {
 	        dir = new File(userHome.getCanonicalPath() + File.separator + ".KotoSwingWalletUI");
 	    }
-	    
+
 		if (!dir.exists())
 		{
 			if (!dir.mkdirs())
@@ -230,11 +264,11 @@ public class OSUtil
 		throws IOException, InterruptedException
 	{
 		OS_TYPE os = getOSType();
-		
+
 		if (os == OS_TYPE.MAC_OS)
 		{
 			CommandExecutor uname = new CommandExecutor(new String[] { "uname", "-sr" });
-		    return uname.execute() + "; " + 
+		    return uname.execute() + "; " +
 		           System.getProperty("os.name") + " " + System.getProperty("os.version");
 		} else if (os == OS_TYPE.WINDOWS)
 		{
@@ -254,7 +288,7 @@ public class OSUtil
 		throws IOException
 	{
 	    File f;
-	    
+
 	    // Try with system property zcash.location.dir - may be specified by caller
 	    String ZCashLocationDir = System.getProperty("zcash.location.dir");
 	    if ((ZCashLocationDir != null) && (ZCashLocationDir.trim().length() > 0))
@@ -265,9 +299,9 @@ public class OSUtil
 	            return f.getCanonicalFile();
 	        }
 	    }
-	    
+
 	    OS_TYPE os = getOSType();
-	    
+
 	    if (isUnixLike(os))
 	    {
 	    	// The following search directories apply to UNIX-like systems only
@@ -282,7 +316,7 @@ public class OSUtil
 				"/opt/local/zcash/bin/",
 				"/opt/zcash/bin/"
 			};
-	
+
 			for (String d : dirs)
 			{
 				f = new File(d + command);
@@ -291,7 +325,7 @@ public class OSUtil
 					return f;
 				}
 			}
-			
+
 	    } else if (os == OS_TYPE.WINDOWS)
 	    {
 	    	// A probable Windows directory is a ZCash dir in Program Files
@@ -313,17 +347,35 @@ public class OSUtil
 	    		}
 	    	}
 	    }
-		
+
 		// Try in the current directory
 		f = new File("." + File.separator + command);
 		if (f.exists() && f.isFile())
 		{
 			return f.getCanonicalFile();
 		}
-			
+
 
 		// TODO: Try to find it with which/PATH
-		
+
 		return null;
+	}
+
+	// TODO: use print writer interface released by logger
+	public static void printStreamToLog(InputStream is) {
+		BufferedInputStream bis = new BufferedInputStream(is);
+		ByteArrayOutputStream buf = new ByteArrayOutputStream();
+		int result = 0;
+		try {
+			result = bis.read();
+			while(result != -1) {
+				buf.write((byte) result);
+				result = bis.read();
+			}
+			// StandardCharsets.UTF_8.name() > JDK 7
+			Log.info(buf.toString("UTF-8"));
+		} catch (IOException e) {
+			Log.warning("cannot read from stream");
+		}
 	}
 }

@@ -9,6 +9,8 @@ presents the information in a user-friendly manner.
 
 ## Building, installing and running the Wallet GUI
 
+Here link to [Binary distribution](https://github.com/koto-dev/koto/releases/tag/171224).
+
 Before installing the Desktop GUI Wallet you need to have Koto up and running. The following [guide](https://github.com/zcash/zcash/wiki/1.0-User-Guide) 
 explains how to set up [Koto](https://koto.cash/). There is also a user-friendly [instructional video](https://www.youtube.com/watch?v=ZoRFLkZG0zg&feature=youtu.be)
 on the same topic.
@@ -111,23 +113,6 @@ The following video also explains how to [set up the GUI wallet](https://www.you
    right-click on the `KotoSwingWalletUI.jar` file and choose the option "Open with OpenJDK 8 Runtime". 
    This will start the Koto GUI wallet.
 
-### License
-This program is distributed under an [MIT License](https://github.com/vaklinov/zcash-swing-wallet-ui/raw/master/LICENSE).
-
-### Disclaimer
-This program is not officially endorsed by or associated with the ZCash project and the ZCash company.
-[Koto®](https://trademarks.justia.com/871/93/zcash-87193130.html) and the 
-[Koto® logo](https://trademarks.justia.com/868/84/z-86884549.html) are trademarks of the
-[Zerocoin Electric Coin Company](https://trademarks.justia.com/owners/zerocoin-electric-coin-company-3232749/).
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
 ### Known issues and limitations
 
 1. Issue: Wallet versions 0.58 and below, when running on systems with (typically non-western) locales that
@@ -145,3 +130,20 @@ transactions). A corresponding issue [#1438](https://github.com/zcash/zcash/issu
 for the ZCash developers. 
 1. Limitation: The CPU percentage shown to be taken by zcashd on Linux is the average for the entire lifetime 
 of the process. This is not very useful. This will be improved in future versions.
+
+### License
+This program is distributed under an [MIT License](https://github.com/vaklinov/zcash-swing-wallet-ui/raw/master/LICENSE).
+
+### Disclaimer
+This program is not officially endorsed by or associated with the ZCash project and the ZCash company.
+[ZCash®](https://trademarks.justia.com/871/93/zcash-87193130.html) and the 
+[ZCash® logo](https://trademarks.justia.com/868/84/z-86884549.html) are trademarks of the
+[Zerocoin Electric Coin Company](https://trademarks.justia.com/owners/zerocoin-electric-coin-company-3232749/).
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

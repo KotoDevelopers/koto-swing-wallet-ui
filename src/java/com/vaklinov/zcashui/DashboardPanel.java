@@ -119,13 +119,17 @@ public class DashboardPanel
 		balanceStatusPanel.setLayout(new BorderLayout(3, 3)); 
 		//balanceStatusPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
-		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 11));
+		JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
+
 		JLabel logoLabel = new JLabel(new ImageIcon(
-			this.getClass().getClassLoader().getResource("images/koto-logo-color-square47.png")));
+			this.getClass().getClassLoader().getResource("images/koto-logo-color-square47.png"))
+		);
 		tempPanel.add(logoLabel);
 		tempPanel.add(new JLabel(" "));
+
 		JLabel zcLabel = new JLabel(rb.S("Koto Wallet  "));
-		zcLabel.setFont(new Font("Helvetica", Font.BOLD, 32));
+		zcLabel.setFont(new Font("Helvetica", Font.BOLD | Font.ITALIC, 30));
+
 		//zcLabel.setForeground(Color.RED);
 		tempPanel.add(zcLabel);
 		tempPanel.setToolTipText(rb.S("Powered by Koto\u00AE"));
@@ -519,11 +523,13 @@ public class DashboardPanel
 
 		String text =
 			"<html>" + 
-		    "<span style=\"font-family:monospace;font-size:1em;" + color1 + rb.S("\">Transparent (k1,jz) balance : <span style=\"font-size:1.1em;\">") + 
+
+		  "<span style=\"font-family:monospace;font-size:1em;" + color1 + rb.S("\">Transparent (k1,jz) balance : <span style=\"font-size:1.1em;\">") + 
 				transparentUCBalance + " KOTO </span></span><br/> " +
 			"<span style=\"font-family:monospace;font-size:1em;" + color2 + rb.S("\">Private (z) balance &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.1em;\">") + 
 		    	privateUCBalance + " KOTO </span></span><br/> " +
 			"<span style=\"font-family:monospace;font-size:1em;" + color3 + rb.S("\">Total (z+k1,jz) balance &nbsp&nbsp&nbsp&nbsp: <span style=\"font-weight:bold;font-size:1.35em;\">") + 
+
 		    	totalUCBalance + " KOTO </span></span>" +
 			"<br/>  </html>";
 		

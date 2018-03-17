@@ -1,5 +1,8 @@
 *.class
-
+!/kotod/init.bat
+!/kotod/koto-cli.exe
+!/kotod/koto-tx.exe
+!/kotod/kotod.exe
 build/**
 
 # Mobile Tools for Java (J2ME)
@@ -8,3 +11,8 @@ build/**
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+*.iml
+.idea
+/kotod/KotoSwingWalletUI.jar
+/sprout-proving.key
+/sprout-verifying.key

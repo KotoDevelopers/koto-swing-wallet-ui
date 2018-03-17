@@ -197,8 +197,8 @@ public class ZCashClientCaller
 	public synchronized Process startDaemon() 
 		throws IOException, InterruptedException 
 	{
-
 	    CommandExecutor starter = new CommandExecutor(getZcashdWithDirParams());
+
 	    
 	    return starter.startChildProcess();
 	}
