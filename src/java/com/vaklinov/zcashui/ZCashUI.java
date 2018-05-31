@@ -103,6 +103,7 @@ public class ZCashUI
 
     public static String dataDir;
     public static String zcparamsDir;
+    public static boolean testnet = false;
 
     JTabbedPane tabs;
 
@@ -464,7 +465,11 @@ public class ZCashUI
                 {
                     Log.info("Zcash Params directory: " + param[1]);
                     zcparamsDir = param[1];
-                }
+                } else if ("--testnet".equals(param[0]))
+		{
+                    Log.info("testnet: ");
+                    testnet = true;
+		}
             }
 
             // If zcashd is currently not running, do a startup of the daemon as a child process

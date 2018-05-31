@@ -122,6 +122,7 @@ public class ZCashClientCaller
 		String exportDir = OSUtil.getUserHomeDirectory().getCanonicalPath();
 		String dataDir = ZCashUI.dataDir;
 		String zcparamsDir = ZCashUI.zcparamsDir;
+		boolean testnet = ZCashUI.testnet;
 
 		List<String> command = new ArrayList<>();
 
@@ -132,6 +133,9 @@ public class ZCashClientCaller
 		}
 		if (zcparamsDir != null) {
 			command.add("-zcparamsdir=" + zcparamsDir);
+		}
+		if (testnet) {
+			command.add("--testnet");
 		}
 
 		for(String arg: args){
@@ -145,12 +149,16 @@ public class ZCashClientCaller
 			throws IOException
 	{
 		String dataDir = ZCashUI.dataDir;
+		boolean testnet = ZCashUI.testnet;
 
 		List<String> command = new ArrayList<>();
 
 		command.add(zcashcli.getCanonicalPath());
 		if (dataDir != null) {
 			command.add("-datadir=" + dataDir);
+		}
+		if (testnet) {
+			command.add("--testnet");
 		}
 
 		for(String arg: args){
